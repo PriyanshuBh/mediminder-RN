@@ -8,7 +8,7 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBQZ_xNGl05P4_sg9UbLz97KxdHWTQ_5es",
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
   authDomain: "mediminder-19e06.firebaseapp.com",
   projectId: "mediminder-19e06",
   storageBucket: "mediminder-19e06.firebasestorage.app",
