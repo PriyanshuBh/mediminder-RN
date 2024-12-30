@@ -1,14 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
-import { Settings, User , LogOut } from 'lucide-react-native';
-import Colors from '@/constant/Colors';
-import ProfileHeader from '@/components/ProfileHeader';
-import ProfileField from '@/components/ProfileField';
-import { getLocalStorage, RemoveLocalStorage } from '@/service/Storage';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
+import { Settings, User, LogOut } from "lucide-react-native";
+import Colors from "@/constant/Colors";
+import ProfileHeader from "@/components/ProfileHeader";
+import ProfileField from "@/components/ProfileField";
+import { getLocalStorage, RemoveLocalStorage } from "@/service/Storage";
+import { useRouter } from "expo-router";
 
 export default function Profile() {
-  const [activeTab, setActiveTab] = useState('info');
-  const [user,setUser] = useState();
+  const [activeTab, setActiveTab] = useState("info");
+  const [user, setUser] = useState();
+  const router = useRouter();
   useEffect(() => {
     GetUserDetail();
   }, []);
@@ -17,11 +26,10 @@ export default function Profile() {
     const userInfo = await getLocalStorage("userDetail");
     setUser(userInfo);
     // console.log(userInfo);
-   
   };
   const logout = async () => {
-   await RemoveLocalStorage();
-  }
+    await RemoveLocalStorage();
+  };
 
   // interface UserProfile {
   //   id: string;
@@ -37,11 +45,10 @@ export default function Profile() {
   //   bloodType?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-' | 'unknown';
   //   weight?: number;
   //   height?: number;
-  
+
   // }
-  
-   const mockProfile = {
-  
+
+  const mockProfile = {
     id: "user1",
     displayName: user?.displayName || "Bharti",
     lastName: user?.lastName || "",
@@ -49,7 +56,7 @@ export default function Profile() {
     gender: user?.gender || "prefer_not_to_say",
     email: user?.email,
     phone: user?.phone || "123-456-7890",
-    avatar: user?.avatar ||  "https://i.pravatar.cc/300",
+    avatar: user?.avatar || "https://i.pravatar.cc/300",
     allergies: ["Penicillin", "Peanuts"],
     conditions: ["Healthy", "No Disease"],
     bloodType: user?.bloodType || "O-",
@@ -75,16 +82,21 @@ export default function Profile() {
 
         <View style={styles.tabsContainer}>
           <TouchableOpacity
-            style={[styles.tab, activeTab === 'info' && styles.activeTab]}
-            onPress={() => setActiveTab('info')}
+            style={[styles.tab, activeTab === "info" && styles.activeTab]}
+            onPress={() => setActiveTab("info")}
           >
-            <Text style={[styles.tabText, activeTab === 'info' && styles.activeTabText]}>
+            <Text
+              style={[
+                styles.tabText,
+                activeTab === "info" && styles.activeTabText,
+              ]}
+            >
               Information
             </Text>
           </TouchableOpacity>
         </View>
 
-        {activeTab === 'info' && (
+        {activeTab === "info" && (
           <View style={styles.sectionContainer}>
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
@@ -97,12 +109,18 @@ export default function Profile() {
                 value={`${mockProfile.displayName} ${mockProfile.lastName}`}
                 onPress={() => {}}
               />
-              
+
               <ProfileField
                 label="Gender"
-                value={mockProfile.gender === 'male' ? 'Male' : 
-                       mockProfile.gender === 'female' ? 'Female' : 
-                       mockProfile.gender === 'other' ? 'Other' : 'Prefer not to say'}
+                value={
+                  mockProfile.gender === "male"
+                    ? "Male"
+                    : mockProfile.gender === "female"
+                    ? "Female"
+                    : mockProfile.gender === "other"
+                    ? "Other"
+                    : "Prefer not to say"
+                }
                 onPress={() => {}}
               />
               <ProfileField
@@ -112,22 +130,23 @@ export default function Profile() {
               />
               <ProfileField
                 label="Phone"
-                value={mockProfile.phone || 'Not provided'}
+                value={mockProfile.phone || "Not provided"}
                 onPress={() => {}}
               />
             </View>
 
-           
-
-            <TouchableOpacity style={styles.logoutButton} onPress={() => {logout()}} >
+            <TouchableOpacity
+              style={styles.logoutButton}
+              onPress={() => {
+                console.log("Logging out...");
+                 router.push("/login");
+              }}
+            >
               <LogOut size={20} color={Colors.error[600]} />
               <Text style={styles.logoutText}>Log Out</Text>
             </TouchableOpacity>
           </View>
         )}
-
-     
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -139,14 +158,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral[50],
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
     paddingTop: 20,
   },
   title: {
-    fontFamily: 'Inter-Bold',
+    fontFamily: "Inter-Bold",
     fontSize: 28,
     color: Colors.neutral[900],
   },
@@ -155,8 +174,8 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: Colors.white,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     shadowColor: Colors.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
@@ -168,7 +187,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   tabsContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     backgroundColor: Colors.neutral[100],
     borderRadius: 12,
     padding: 4,
@@ -177,7 +196,7 @@ const styles = StyleSheet.create({
   tab: {
     flex: 1,
     paddingVertical: 10,
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 8,
   },
   activeTab: {
@@ -189,7 +208,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   tabText: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: "Inter-Medium",
     fontSize: 14,
     color: Colors.neutral[600],
   },
@@ -210,19 +229,19 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 16,
   },
   sectionTitle: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: "Inter-SemiBold",
     fontSize: 18,
     color: Colors.neutral[900],
     marginLeft: 8,
   },
   toggleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   toggle: {
     width: 50,
@@ -230,11 +249,11 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     backgroundColor: Colors.neutral[300],
     padding: 2,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   toggleActive: {
     backgroundColor: Colors.primary[500],
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   toggleThumb: {
     width: 24,
@@ -257,9 +276,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: Colors.white,
     paddingVertical: 16,
     borderRadius: 12,
@@ -270,25 +289,25 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   logoutText: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: "Inter-Medium",
     fontSize: 16,
     color: Colors.error[600],
     marginLeft: 8,
   },
   contactHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 16,
   },
   addContactButton: {
     padding: 4,
   },
   emptyText: {
-    fontFamily: 'Inter-Regular',
+    fontFamily: "Inter-Regular",
     fontSize: 14,
     color: Colors.neutral[500],
-    textAlign: 'center',
+    textAlign: "center",
     paddingVertical: 16,
-  }
+  },
 });
